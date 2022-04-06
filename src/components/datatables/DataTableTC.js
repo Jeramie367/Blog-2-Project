@@ -5,7 +5,7 @@ class DataTableTC extends Component {
     constructor() {
         super();
         this.state ={
-            datab:TrafficCamerasData,
+            selectedData:TrafficCamerasData,
             filterData:[],
             error_output:""
         }
@@ -17,14 +17,14 @@ class DataTableTC extends Component {
     cameraFilter(e){
         
        var count = 0;
-            var filteredData = this.state.datab.filter((datab)=> {
+            var filteredData = this.state.selectedData.filter((selectedData)=> {
                 if(e.target.value == ""){
                     
                 }
-                else if(datab.camera_url.description.toLocaleLowerCase().startsWith(e.target.value.toLowerCase()) && count <=5){
+                else if(selectedData.camera_url.description.toLocaleLowerCase().startsWith(e.target.value.toLowerCase()) && count <=5){
                     count = count + 1
                     
-                    return datab
+                    return selectedData
                 }
                 
             })
@@ -38,20 +38,21 @@ class DataTableTC extends Component {
         }else{
             this.setState({
             
-                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for"
+                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for",
+                filterData:[]
             })
         }
     }
     cameraLocationFilter(e){
         
         var count = 0;
-             var filteredData = this.state.datab.filter((datab)=> {
+             var filteredData = this.state.selectedData.filter((selectedData)=> {
                  if(e.target.value == ""){
                      
                  }
-                 else if(datab.camera_location.toLocaleLowerCase().startsWith(e.target.value.toLocaleLowerCase()) && count <=5){
+                 else if(selectedData.camera_location.toLocaleLowerCase().startsWith(e.target.value.toLocaleLowerCase()) && count <=5){
                      count = count + 1
-                     return datab
+                     return selectedData
                  }
                  
              })
@@ -65,7 +66,8 @@ class DataTableTC extends Component {
         }else{
             this.setState({
             
-                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for"
+                error_output:"Sorry it isn't here or there are very few results. Try a typing in something like this.|[street name] / [street name] [Quadrant]|",
+                filterData:[]
             })
         }
      }
@@ -85,6 +87,7 @@ class DataTableTC extends Component {
                 <input type="text"
                 placeholder=""
                 onChange={(e) => this.cameraLocationFilter(e)}/>
+                {this.state.error_output != "" ?<p>{this.state.error_output}</p>:null}
             <table>
                 <thead>
                   <tr>
@@ -97,7 +100,7 @@ class DataTableTC extends Component {
                 </thead>
                 <tbody>
 
-            {this.state.filterData.map((tcDetail,index) => {
+            {this.state.filterData.map((tcDetail) => {
             return  <tr key={tcDetail.camera_url.description}>
             
                         <th>{tcDetail.camera_url.description}</th>
@@ -110,8 +113,6 @@ class DataTableTC extends Component {
             }
           </tbody>  
         </table>
-            <br/>
-            <p>{this.state.error_output}</p>
             
         </div>
     )

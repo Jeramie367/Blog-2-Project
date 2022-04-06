@@ -5,7 +5,7 @@ class DataTableCS extends Component {
     constructor() {
         super();
         this.state ={
-            datab:CrimeStatsData,
+            selectedData:CrimeStatsData,
             filterData:[],
             error_output:""
         }
@@ -17,19 +17,19 @@ class DataTableCS extends Component {
     idFilter(e){
         
        var count = 0;
-            var filteredData = this.state.datab.filter((datab)=> {
+            var filteredData = this.state.selectedData.filter((selectedData)=> {
                 if(e.target.value == ""){
                     
                 }
-                else if(datab.id.toLocaleLowerCase().startsWith(e.target.value.toLowerCase()) ){
+                else if(selectedData.id.toLocaleLowerCase().startsWith(e.target.value.toLowerCase())&& count <=5 ){
                     count = count + 1
                     
-                    return datab
+                    return selectedData
                 }
                 
             })
             
-        if(count >= 3 && count <=5 || (count == 0 &&e.target.value == "" )){
+        if(count >= 3 || (count == 0 &&e.target.value == "" )){
         this.setState({
             
             filterData:filteredData,
@@ -38,20 +38,21 @@ class DataTableCS extends Component {
         }else{
             this.setState({
             
-                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for"
+                error_output:"Sorry it isn't here or there are very few results. Try a typing in something like this.| yyyy-Mon-[communityName]-[crime]-[count] |",
+                filterData:[]
             })
         }
     }
     communityNameFilter(e){
         
         var count = 0;
-             var filteredData = this.state.datab.filter((datab)=> {
+             var filteredData = this.state.selectedData.filter((selectedData)=> {
                  if(e.target.value == ""){
                      
                  }
-                 else if(datab.community_name.startsWith(e.target.value) && count <=5){
+                 else if(selectedData.community_name.startsWith(e.target.value) && count <=5){
                      count = count + 1
-                     return datab
+                     return selectedData
                  }
                  
              })
@@ -65,7 +66,8 @@ class DataTableCS extends Component {
         }else{
             this.setState({
             
-                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for"
+                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for",
+                filterData:[]
             })
         }
      }
@@ -85,6 +87,7 @@ class DataTableCS extends Component {
                 <input type="text"
                 placeholder=""
                 onChange={(e) => this.communityNameFilter(e)}/>
+                {this.state.error_output != "" ?<p>{this.state.error_output}</p>:null}
             <table>
                 <thead>
                   <tr>
@@ -99,7 +102,7 @@ class DataTableCS extends Component {
                 </thead>
                 <tbody>
 
-            {this.state.filterData.map((csDetail,index) => {
+            {this.state.filterData.map((csDetail) => {
             return  <tr key={csDetail.id}>
             
                         <th>{csDetail.community_name}</th>
@@ -114,8 +117,6 @@ class DataTableCS extends Component {
             }
           </tbody>  
         </table>
-            <br/>
-            <p>{this.state.error_output}</p>
             
         </div>
     )

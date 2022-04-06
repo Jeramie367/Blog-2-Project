@@ -5,7 +5,7 @@ class DataTableBP extends Component {
     constructor() {
         super();
         this.state ={
-            datab:TrafficIncidentsData,
+            selectedData:TrafficIncidentsData,
             filterData:[],
             error_output:""
         }
@@ -18,14 +18,14 @@ class DataTableBP extends Component {
     permitNumberFilter(e){
         
        var count = 0;
-            var filteredData = this.state.datab.filter((datab)=> {
+            var filteredData = this.state.selectedData.filter((selectedData)=> {
                 if(e.target.value == ""){
                     
                 }
-                else if(datab.permitnum.toLocaleLowerCase().startsWith(e.target.value.toLowerCase()&& count <=5) ){
+                else if(selectedData.permitnum.toLocaleLowerCase().startsWith(e.target.value.toLocaleLowerCase())&& count <=5 ){
                     count = count + 1
                     
-                    return datab
+                    return selectedData
                 }
                 
             })
@@ -39,20 +39,21 @@ class DataTableBP extends Component {
         }else{
             this.setState({
             
-                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for"
+                error_output:"Sorry it isn't here or there are very few results. Try typing in |BP2021-[IDnumber] |",
+                filterData:[]
             })
         }
     }
     addressFilter(e){
         
         var count = 0;
-             var filteredData = this.state.datab.filter((datab)=> {
+             var filteredData = this.state.selectedData.filter((selectedData)=> {
                  if(e.target.value == ""){
                      
                  }
-                 else if(datab.originaladdress.startsWith(e.target.value) && count <=5 ){
+                 else if(selectedData.originaladdress.startsWith(e.target.value) && count <=5 ){
                      count = count + 1
-                     return datab
+                     return selectedData
                  }
                  
              })
@@ -66,20 +67,24 @@ class DataTableBP extends Component {
         }else{
             this.setState({
             
-                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for"
+                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for",
+                filterData:[]
             })
         }
      }
     costFilter(e){
         
         var count = 0;
-             var filteredData = this.state.datab.filter((datab)=> {
+             var filteredData = this.state.selectedData.filter((selectedData)=> {
                  if(e.target.value == ""){
                      
                  }
-                 else if(datab.estprojectcost.startsWith(e.target.value) && count <=5){
-                     count = count + 1
-                     return datab
+                 else if(selectedData.estprojectcost != null){
+                     if(selectedData.estprojectcost.startsWith(e.target.value) && count <=5){
+                        count = count + 1
+                        return selectedData
+                     }
+                     
                  }
                  
              })
@@ -93,7 +98,8 @@ class DataTableBP extends Component {
         }else{
             this.setState({
             
-                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for"
+                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for",
+                filterData:[]
             })
         }
      }
@@ -108,7 +114,7 @@ class DataTableBP extends Component {
                 placeholder=""
                 onChange={(e) => this.permitNumberFilter(e)}/>
                 <br/>
-                <label>Date</label>
+                <label>Address</label>
                 <br/>
                 <input type="text"
                 placeholder=""
@@ -119,7 +125,7 @@ class DataTableBP extends Component {
                 <input type="text"
                 placeholder=""
                 onChange={(e) => this.costFilter(e)}/>
-                <br/>
+                {this.state.error_output != "" ?<p>{this.state.error_output}</p>:null}
             <table>
                 <thead>
                   <tr>
@@ -136,7 +142,7 @@ class DataTableBP extends Component {
                 </thead>
                 <tbody>
 
-            {this.state.filterData.map((bpDetail,index) => {
+            {this.state.filterData.map((bpDetail) => {
             return  <tr key={bpDetail.permitnum}>
             
                         <th>{bpDetail.permitnum}</th>
@@ -144,17 +150,15 @@ class DataTableBP extends Component {
                         <th>{bpDetail.permittype}</th>
                         <th>{bpDetail.permitclass}</th>
                         <th>{bpDetail.workclassgroup}</th>
-                        <th>{bpDetail.contractorname == null ? bpDetail.contractorname:'N/A'}</th>
-                        <th>{bpDetail.estprojectcost == null ? bpDetail.estprojectcost:'N/A'}</th>
+                        <th>{bpDetail.contractorname != null ? bpDetail.contractorname:'N/A'}</th>
+                        <th>{bpDetail.estprojectcost != null ? bpDetail.estprojectcost:'N/A'}</th>
                         <th>{bpDetail.originaladdress}</th>
-                        <th>{bpDetail.contractorname == null ? <a href={`https://www.google.com/maps/@${bpDetail.location.latitude},${bpDetail.location.longitude}`} >Click here to see map</a>:'Location coordinance unknown'}</th>
+                        <th>{bpDetail.contractorname != null ? <a href={`https://www.google.com/maps/@${bpDetail.location.latitude},${bpDetail.location.longitude}`} >Click here to see map</a>:'Location coordinance unknown'}</th>
                     </tr>
             })
             }
           </tbody>  
         </table>
-            <br/>
-            <p>{this.state.error_output}</p>
             
         </div>
     )

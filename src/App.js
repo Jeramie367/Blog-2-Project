@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import RadioInfo from "./data/RadioInfo";
 import SearchFilesRadio from "./components/SearchFilesRadio";
-import DataTableTI from "./components/datatables/DataTableTI";
-import DataTableTC from "./components/datatables/DataTableTC";
-import DataTableCS from "./components/datatables/DataTableCS";
-import DataTableBP from "./components/datatables/DataTableBP";
 class App extends Component {
   constructor() {
     super()

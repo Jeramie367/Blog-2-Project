@@ -5,7 +5,7 @@ class DataTableTI extends Component {
     constructor() {
         super();
         this.state ={
-            datab:TrafficIncidentsData,
+            selectedData:TrafficIncidentsData,
             filterData:[],
             error_output:""
         }
@@ -17,14 +17,14 @@ class DataTableTI extends Component {
     incidentInfoFilter(e){
         
        var count = 0;
-            var filteredData = this.state.datab.filter((datab)=> {
+            var filteredData = this.state.selectedData.filter((selectedData)=> {
                 if(e.target.value == ""){
                     
                 }
-                else if(datab.incident_info.toLocaleLowerCase().startsWith(e.target.value.toLowerCase()) && count <=5){
+                else if(selectedData.incident_info.toLocaleLowerCase().startsWith(e.target.value.toLowerCase()) && count <=5){
                     count = count + 1
                     
-                    return datab
+                    return selectedData
                 }
                 
             })
@@ -38,20 +38,21 @@ class DataTableTI extends Component {
         }else{
             this.setState({
             
-                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for"
+                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for",
+                filterData:[]
             })
         }
     }
     startDateFilter(e){
         
         var count = 0;
-             var filteredData = this.state.datab.filter((datab)=> {
+             var filteredData = this.state.selectedData.filter((selectedData)=> {
                  if(e.target.value == ""){
                      
                  }
-                 else if(datab.start_dt.startsWith(e.target.value) && count <=5){
+                 else if(selectedData.start_dt.startsWith(e.target.value) && count <=5){
                      count = count + 1
-                     return datab
+                     return selectedData
                  }
                  
              })
@@ -65,13 +66,12 @@ class DataTableTI extends Component {
         }else{
             this.setState({
             
-                error_output:"Sorry, it isn't here or there are very few results. Try a different search filter to find what you are looking for"
+                error_output:"Sorry it isn't here or there are very few results. Try a typing in something like this.| yyyy-Mon-ddTHH:Min:Sec |",
+                filterData:[]
             })
         }
      }
-    render(){
-        
-             
+    render(){  
         return (
             <div>
                 <label>Incident Info</label>
@@ -80,11 +80,12 @@ class DataTableTI extends Component {
                 placeholder=""
                 onChange={(e) => this.incidentInfoFilter(e)}/>
                 <br/>
-                <label>Date</label>
+                <label>Start Date</label>
                 <br/>
                 <input type="text"
                 placeholder=""
                 onChange={(e) => this.startDateFilter(e)}/>
+                 {this.state.error_output != "" ?<p>{this.state.error_output}</p>:null}
             <table>
                 <thead>
                   <tr>
@@ -99,7 +100,7 @@ class DataTableTI extends Component {
                 </thead>
                 <tbody>
 
-            {this.state.filterData.map((tiDetail,index) => {
+            {this.state.filterData.map((tiDetail) => {
             return  <tr key={tiDetail.id}>
             
                         <th>{tiDetail.incident_info}</th>
@@ -114,8 +115,6 @@ class DataTableTI extends Component {
             }
           </tbody>  
         </table>
-            <br/>
-            <p>{this.state.error_output}</p>
             
         </div>
     )
