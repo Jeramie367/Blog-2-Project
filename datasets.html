@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JSON search</title>
+<meta name="author" content="Jeramie Roesler" >
+<meta name="date" content="8/9/2021" >
+<meta name="description" content="this is for part A">
+<script type="text/javascript" src="./assets/script/datasets.js"></script>
+<link rel="stylesheet" href="./assets/style/datasets.css">
+</head>
+<body>
+<header>
+    <h1>Calgary Datasets</h1>
+
+
+</header>
+<br>
+
+<br>
+<div class="search_piece">
+    <div class="radio_selection">
+        <h2>Select the files you want to look up.</h2>
+        <label for="traffic_incidents">Traffic Incidents</label>
+        <input type="radio" name="file" id="traffic_incidents" value="ti" onclick="checkchoice(this.value)">
+        <br>
+        <label for="traffic_cameras">Traffic Cameras</label>
+        <input type="radio" name="file" id="traffic_cameras" value="tc" onclick="checkchoice(this.value)">
+        <br>
+        <label for="crime_stats">Crime Stats</label>
+        <input type="radio" name="file" id="crime_stats" value="cs" onclick="checkchoice(this.value)">
+        <br>
+        <label for="building_permits">Building Permits</label>
+        <input type="radio" name="file" id="building_permits" value="bp" onclick="checkchoice(this.value)">
+    </div>
+    <div class="ti_choice hide">
+
+        <label for="location_ti">Street Address:</label>
+        <input type="text" size="30" id="location_ti">
+        <br>
+        <label for="date_ti">Date:</label>
+        <input type="text" size="30" id="date_ti">
+    </div>
+    <div class="tc_choice hide"> 
+        <label for="camera#_tc">Camera Number:</label>
+        <input type="text" size="30" id="camera#_tc">
+        <br>
+        <label for="camera_location_tc">Camera Location:</label>
+        <input type="text" size="30" id="camera_location_tc">
+        
+    </div>
+    <div class="cs_choice hide">
+        <label for="community_cs">Community Address:</label>
+        <input type="text" size="30" id="community_cs">
+        <br>
+        <label for="id_cs">ID:</label>
+        <input type="text" size="30" id="id_cs">
+        
+    </div>
+    <div class="bp_choice hide">
+        <label for="permit#_bp">Permit Number:</label>
+        <input type="text" size="30" id="permit#_bp">
+        <br>
+        <label for="address_bp">Address:</label>
+        <input type="text" size="30" id="address_bp">
+        <br>
+        <label for="cost_bp">Cost:</label>
+        <input type="text" size="30" id="cost_bp">
+    </div>
+</div>
+<br>
+<div class="results hide" >
+    <h3 id="searchtitle"></h3>
+    <br>
+    <table id="searchresults" class="table"></table>
+</div>
+</body>
+</html>
